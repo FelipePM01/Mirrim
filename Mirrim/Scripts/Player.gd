@@ -1,6 +1,17 @@
 extends KinematicBody2D
 
 
+var Reflection = preload("res://Scenes/Reflection.tscn")
+
+
+var active_reflections = 0
+var reflections = []
+var up_reflection = null
+var right_reflection = null
+var left_reflection = null
+var down_reflection = null
+
+var up_dir = Vector2(0, -1)
 var dir = Vector2(1, 0)
 var vel = Vector2(0, 0)
 var carried = null
@@ -10,6 +21,7 @@ var can_jump = true
 var jump_logged = false
 
 
+onready var parent = get_parent()
 onready var floor_detector_left = get_node("Raycasts/FloorDetectorLeft")
 onready var floor_detector_right = get_node("Raycasts/FloorDetectorRight")
 onready var action_raycast = get_node("Raycasts/ActionRaycast")
@@ -17,15 +29,28 @@ onready var action_raycast = get_node("Raycasts/ActionRaycast")
 onready var coyote_timer = get_node("CoyoteTimer")
 onready var log_jump_timer = get_node("LogJumpTimer")
 
+onready var right_reflection_raycasts = get_node("Raycasts/RightReflectionRaycasts").get_children()
+onready var left_reflection_raycasts = get_node("Raycasts/LeftReflectionRaycasts").get_children()
+onready var up_reflection_raycasts = get_node("Raycasts/UpReflectionRaycasts").get_children()
+onready var down_reflection_raycasts = get_node("Raycasts/DownReflectionRaycasts").get_children()
+
+onready var reflection_references = [right_reflection, down_reflection, left_reflection, up_reflection]
+onready var reflection_raycasts = [right_reflection_raycasts, down_reflection_raycasts, left_reflection_raycasts, up_reflection_raycasts]
+
 
 func _ready():
-	pass # Replace with function body.
+	for i in range(Global.MAX_REFLECTIONS):
+		var new_reflection = Reflection.instance()
+		new_reflection.player = self
+		parent.add_child(new_reflection)
+		reflections.append(new_reflection)
 
 
 func _physics_process(delta):
 	dir_process()
 	pickup_process()
 	move_process()
+	reflection_process()
 
 
 func get_input_dir():
@@ -113,6 +138,9 @@ func dir_process():
 func pickup_process():
 	if Input.is_action_just_pressed("action"):
 		if not is_carrying:
+			action_raycast.cast_to = dir * Global.ACTION_RAYCAST_LENGHT
+			action_raycast.force_raycast_update()
+			
 			if check_on_floor() and action_raycast.is_colliding():
 				carried = action_raycast.get_collider()
 				is_carrying = true
@@ -134,3 +162,53 @@ func move_process():
 	vel = h_vel + v_vel
 	
 	move_and_slide(vel)
+
+
+func get_nearest_mirror(raycast_list):
+	var result_collider = null
+	
+	for raycast in raycast_list:
+		if raycast.is_colliding():
+			var collider = raycast.get_collider()
+			if collider.get_collision_layer_bit(1):
+				result_collider = collider
+				break
+
+
+func create_reflections():
+	for i in range(4):
+		if not reflection_references[i]:
+			var mirror = get_nearest_mirror(reflection_raycasts[i])
+			if mirror:
+				reflection_references[i] = make_reflection(self, mirror, i == 0 or i == 2)
+
+
+func make_reflection(source, mirror, is_reflection_horizontal):
+	if active_reflections < Global.MAX_REFLECTIONS:
+		reflections[active_reflections].source = source
+		reflections[active_reflections].mirror = mirror
+		reflections[active_reflections].is_reflection_horizontal = is_reflection_horizontal
+		reflections[active_reflections].activate()
+		
+		active_reflections += 1
+		
+		return reflections[active_reflections - 1]
+	return null
+
+
+func remove_reflection(reflection):
+	reflections.remove(reflections.find(reflection))
+	reflections.append(reflection)
+	active_reflections -= 1
+	
+	reflection.deactivate()
+
+
+func update_reflections():
+	for reflection in reflection_references:
+		reflection.update()
+
+
+func reflection_process():
+	create_reflections()
+	update_reflections()
