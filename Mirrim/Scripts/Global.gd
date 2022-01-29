@@ -1,0 +1,19 @@
+extends Node
+
+
+const MOVE_SPEED = 150
+const HEAVY_MOVE_SPEED = 90
+
+const FALL_SPEED = 300
+
+const JUMP_SPEED = 600
+const HEAVY_JUMP_SPEED = 150
+
+const ACCELERATION = 0.2
+const HEAVY_ACCELERATION = 0.05
+
+const GRAVITY = 0.08
+const HELD_GRAVITY = 0.001
+
+const COYOTE_TIME = 0.07
+const LOG_JUMP_TIME = 0.07
