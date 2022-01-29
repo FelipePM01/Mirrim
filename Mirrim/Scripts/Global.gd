@@ -24,3 +24,5 @@ const ACTION_RAYCAST_LENGHT = 16
 
 const COYOTE_TIME = 0.07
 const LOG_JUMP_TIME = 0.07
+
+const CELL_SIZE = 16

@@ -43,6 +43,8 @@ func drop():
 		posicao=Player.position+Vector2(+tile_size/2,tile_size/2)+base_left
 	else:
 		posicao=Player.position+Vector2(-tile_size/2,tile_size/2)+base_right
+	
+	position = posicao
 	var resultado=check_collision(posicao)
 	set_collision_layer_bit(0,true)
 	set_collision_layer_bit(1,true)
@@ -50,10 +52,10 @@ func drop():
 	Player=null
 	
 func get_center():
-	return (rect.position+rect.end)/2
+	return (rect.position+rect.end)/2 * Global.CELL_SIZE
 	
 func get_rect():
-	return rect
+	return Rect2(rect.position * Global.CELL_SIZE, rect.size * Global.CELL_SIZE)
 	
 func check_collision(posicao):
 	pass
