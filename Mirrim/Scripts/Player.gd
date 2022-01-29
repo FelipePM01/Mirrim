@@ -19,6 +19,7 @@ var is_carrying = false
 var coyote_timed = false
 var can_jump = true
 var jump_logged = false
+var first_pass = false
 
 
 onready var parent = get_parent()
@@ -39,18 +40,25 @@ onready var reflection_raycasts = [right_reflection_raycasts, down_reflection_ra
 
 
 func _ready():
+	call_deferred("start_reflections")
+
+
+func start_reflections():
 	for i in range(Global.MAX_REFLECTIONS):
 		var new_reflection = Reflection.instance()
+		get_parent().add_child(new_reflection)
 		new_reflection.player = self
-		parent.add_child(new_reflection)
 		reflections.append(new_reflection)
 
 
 func _physics_process(delta):
-	dir_process()
-	pickup_process()
-	move_process()
-	reflection_process()
+	if not first_pass:
+		first_pass = true
+	else:
+		dir_process()
+		pickup_process()
+		move_process()
+		reflection_process()
 
 
 func get_input_dir():
@@ -173,13 +181,15 @@ func get_nearest_mirror(raycast_list):
 			if collider.get_collision_layer_bit(1):
 				result_collider = collider
 				break
+	
+	return result_collider
 
 
 func create_reflections():
 	for i in range(4):
 		if not reflection_references[i]:
 			var mirror = get_nearest_mirror(reflection_raycasts[i])
-			if mirror:
+			if mirror != null:
 				reflection_references[i] = make_reflection(self, mirror, i == 0 or i == 2)
 
 
