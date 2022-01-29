@@ -75,12 +75,19 @@ func delete_past_reflection_reference():
 			source.down_reflection = null
 
 
+func remove_reflection_reference(reflection):
+	for i in range(4):
+		if reflection_references[i] == reflection:
+			reflection_references[i] = null
+			break
+
+
 func pop():
 	for i in reflection_references.size():
 		if reflection_references[i]:
 			reflection_references[i].pop()
 	
-	delete_past_reflection_reference()
+	source.remove_reflection_reference(self)
 	
 	player.remove_reflection(self)
 
