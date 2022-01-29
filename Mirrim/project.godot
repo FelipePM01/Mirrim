@@ -11,13 +11,21 @@ config_version=4
 [application]
 
 config/name="Mirrim"
-run/main_scene="res://Scenes/Game.tscn"
+run/main_scene="res://Scenes/Test.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://Scenes/Global.tscn"
 
 [display]
 
 window/size/width=384
 window/size/height=270
+window/size/test_width=960
+window/size/test_height=540
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
 
 [input]
 
