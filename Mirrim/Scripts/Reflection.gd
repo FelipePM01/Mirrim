@@ -26,6 +26,15 @@ onready var reflection_references = [right_reflection, down_reflection, left_ref
 onready var reflection_raycasts = [right_reflection_raycasts, down_reflection_raycasts, left_reflection_raycasts, up_reflection_raycasts]
 
 
+func update_existence():
+	var rect = mirror.get_rect() 
+	var up_left_corner = rect.position
+	var down_right_corner = rect.end
+	
+	if is_reflection_horizontal:
+		if position[0] + Global. < up_left_corner or position[0]
+
+
 func update_position():
 	var reflection_dir = Vector2(1, 0)
 	
@@ -60,6 +69,9 @@ func create_reflections():
 func update_reflections():
 	for reflection in reflection_references:
 		reflection.update()
+
+
+func pop():
 
 
 func update():

@@ -2,6 +2,8 @@ extends Node
 
 const MAX_REFLECTIONS = 10
 
+const POSITION_TOLERANCE = 7
+
 const MOVE_SPEED = 110
 const HEAVY_MOVE_SPEED = 60
 

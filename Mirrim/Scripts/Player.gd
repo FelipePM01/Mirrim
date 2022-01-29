@@ -50,6 +50,7 @@ func _physics_process(delta):
 	dir_process()
 	pickup_process()
 	move_process()
+	reflection_process()
 
 
 func get_input_dir():
@@ -193,6 +194,14 @@ func make_reflection(source, mirror, is_reflection_horizontal):
 		
 		return reflections[active_reflections - 1]
 	return null
+
+
+func remove_reflection(reflection):
+	reflections.remove(reflections.find(reflection))
+	reflections.append(reflection)
+	active_reflections -= 1
+	
+	reflection.deactivate()
 
 
 func update_reflections():
