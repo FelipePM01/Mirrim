@@ -199,9 +199,16 @@ func make_reflection(source, mirror, is_reflection_horizontal):
 		reflections[active_reflections].mirror = mirror
 		reflections[active_reflections].is_reflection_horizontal = is_reflection_horizontal
 		
-		var project_dir = Vector2(1, 0)
+		var project_dir
+		
+		if is_reflection_horizontal:
+			project_dir = Vector2(1, 0)
+			reflections[active_reflections].dir = -source.dir
+			reflections[active_reflections].up_dir = source.up_dir
 		if not is_reflection_horizontal:
 			project_dir = Vector2(0, 1)
+			reflections[active_reflections].dir = source.dir
+			reflections[active_reflections].up_dir = -source.up_dir
 		
 		reflections[active_reflections].past_reflection_dir = (mirror.position + mirror.get_center() - source.position).project(project_dir).normalized()
 		
@@ -219,6 +226,13 @@ func remove_reflection(reflection):
 	active_reflections -= 1
 	
 	reflection.deactivate()
+
+
+func remove_reflection_reference(reflection):
+	for i in range(4):
+		if reflection_references[i] == reflection:
+			reflection_references[i] = null
+			break
 
 
 func update_reflections():
