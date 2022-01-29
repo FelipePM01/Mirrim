@@ -32,7 +32,11 @@ func update_existence():
 	var down_right_corner = rect.end
 	
 	if is_reflection_horizontal:
-		if position[0] + Global. < up_left_corner or position[0]
+		if position[0] + Global.POSITION_TOLERANCE < up_left_corner[0] or position[0] - Global.POSITION_TOLERANCE > down_right_corner[0]:
+			pop()
+	else:
+		if position[1] + Global.POSITION_TOLERANCE < up_left_corner[1] or position[1] - Global.POSITION_TOLERANCE > down_right_corner[1]:
+			pop()
 
 
 func update_position():
@@ -71,8 +75,26 @@ func update_reflections():
 		reflection.update()
 
 
-func pop():
+func delete_past_reflection_reference():
+	match past_reflection_dir:
+		Vector2(1, 0):
+			source.right_reflection = null
+		Vector2(0, -1):
+			source.up_reflection = null
+		Vector2(-1, 0):
+			source.left_reflection = null
+		Vector2(0 , 1):
+			source.down_reflection = null
 
+
+func pop():
+	for i in reflection_references.size():
+		if reflection_references[i]:
+			reflection_references[i].pop()
+	
+	delete_past_reflection_reference()
+	
+	player.remove_reflection(self)
 
 func update():
 	update_position()
