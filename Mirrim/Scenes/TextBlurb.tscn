@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Themes/MainTheme.tres" type="Theme" id=1]
+
+[node name="Blurb" type="RichTextLabel"]
+margin_right = 480.0
+margin_bottom = 40.0
+rect_clip_content = false
+theme = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center][wave]"
+__meta__ = {
+"_edit_use_anchors_": false
+}

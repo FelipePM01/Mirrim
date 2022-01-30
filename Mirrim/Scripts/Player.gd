@@ -71,6 +71,8 @@ func _physics_process(delta):
 func reset_process():
 	if Input.is_action_just_pressed("restart"):
 		Global.restart()
+	elif Input.is_action_just_pressed("menu"):
+		Global.goto_menu()
 
 
 func get_input_dir():
