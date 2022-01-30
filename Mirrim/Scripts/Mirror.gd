@@ -20,10 +20,23 @@ var tilemap
 func _ready():
 	tilemap = $TileMap
 	
-	rect = tilemap.get_used_rect()
+	rect = calculate_rect()
 	base_center = (rect.position + Vector2(-rect.size[0] / 2, 0)) * Global.CELL_SIZE
 	base_left = rect.position * Global.CELL_SIZE
 	base_right = rect.position * Global.CELL_SIZE + Vector2(-rect.size[0] * Global.CELL_SIZE, 0)
+
+
+func calculate_rect():
+	var h = 0
+	var w = 0
+	
+	while tilemap.get_cell(h, 0) != -1:
+		h += 1
+	
+	while tilemap.get_cell(0, w) != -1:
+		w += 1
+	
+	return Rect2(Vector2(0, 0), Vector2(h, w))
 
 
 func _physics_process(delta):
@@ -47,7 +60,7 @@ func falling_process():
 
 
 func carried_process():
-	position = carrier.position + Vector2(0, Global.CELL_SIZE / 2) + rect.size.project(Vector2(0, 1)).distance_to(Vector2(0, 0)) * carrier.up_dir * Global.CELL_SIZE
+	position = carrier.position + Vector2(0, -Global.CELL_SIZE / 2) + rect.size.project(Vector2(0, 1)).distance_to(Vector2(0, 0)) * carrier.up_dir * Global.CELL_SIZE / 2
 
 
 func pickup(entity):
@@ -67,8 +80,7 @@ func drop_in_place():
 
 
 func drop():
-	var sum_vector = (rect.size.project(Vector2(1, 0)).distance_to(Vector2(0, 0)) / 2 * carrier.dir + rect.size.project(Vector2(0, 1)).distance_to(Vector2(0, 0)) / 2 * carrier.up_dir) * Global.CELL_SIZE
-	var aim_pos = carrier.position + carrier.dir * (Global.CELL_SIZE + Global.EXTRA_MIRROR_SPACING) / 2 + sum_vector
+	var aim_pos = carrier.position + carrier.dir * (Global.CELL_SIZE + Global.EXTRA_MIRROR_SPACING) / 2 - carrier.up_dir * Global.CELL_SIZE / 2 + (carrier.dir * rect.size[0] + carrier.up_dir * rect.size[1]) * Global.CELL_SIZE / 2
 	
 	var space_state = get_world_2d().direct_space_state
 	var shape = RectangleShape2D.new()
