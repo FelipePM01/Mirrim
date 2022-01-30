@@ -29,7 +29,7 @@ const LOG_JUMP_TIME = 0.07
 const CELL_SIZE = 16
 const EXTRA_MIRROR_SPACING = 16
 
-export (String) var menu_path
+const menu_path = "res://Scenes/Menu.tscn"
 
 
 const MASTER_BUS = 0
