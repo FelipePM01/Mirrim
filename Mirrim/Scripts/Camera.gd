@@ -23,8 +23,6 @@ var aim_rot = 0
 var base_rotation = 0
 
 
-onready var animation_player = $AnimationPlayer
-onready var rotation_tween = $RotationTween
 onready var noise = OpenSimplexNoise.new()
 var noise_y = 0
 
@@ -64,14 +62,6 @@ func shake():
 	rotation = base_rotation + MAX_ROLL * amount * noise.get_noise_2d(noise.seed, noise_y)
 	offset[0] = MAX_OFFSET[0] * amount * noise.get_noise_2d(noise.seed * 2, noise_y)
 	offset[1] = MAX_OFFSET[1] * amount * noise.get_noise_2d(noise.seed * 3, noise_y)
-
-
-func rotate(up_dir):
-	aim_rot = Vector2(0, -1).angle_to(up_dir)
-	
-	rotation_tween.stop_all()
-	#rotation_tween.interpolate_property(self, "base_rotation", base_rotation, Vector2(0, -1).angle_to(up_dir), ROTATION_TIME, Tween.TRANS_BACK, Tween.EASE_OUT)
-	rotation_tween.start()
 
 
 func play_anim(animation):

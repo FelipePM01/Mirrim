@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/playerPlaceholder.png" type="Texture" id=2]
@@ -9,6 +9,30 @@ height = 6.0
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 4, 2 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "carry_fall"
+
+[sub_resource type="Animation" id=4]
+resource_name = "carry_idle"
+
+[sub_resource type="Animation" id=5]
+resource_name = "carry_jump"
+
+[sub_resource type="Animation" id=6]
+resource_name = "carry_move"
+
+[sub_resource type="Animation" id=7]
+resource_name = "fall"
+
+[sub_resource type="Animation" id=8]
+resource_name = "idle"
+
+[sub_resource type="Animation" id=9]
+resource_name = "jump"
+
+[sub_resource type="Animation" id=10]
+resource_name = "move"
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 4
@@ -23,6 +47,16 @@ shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/carry_fall = SubResource( 3 )
+anims/carry_idle = SubResource( 4 )
+anims/carry_jump = SubResource( 5 )
+anims/carry_move = SubResource( 6 )
+anims/fall = SubResource( 7 )
+anims/idle = SubResource( 8 )
+anims/jump = SubResource( 9 )
+anims/move = SubResource( 10 )
 
 [node name="InteractionArea" type="Area2D" parent="."]
 
