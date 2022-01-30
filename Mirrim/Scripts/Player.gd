@@ -49,6 +49,7 @@ func start_reflections():
 		var new_reflection = Reflection.instance()
 		get_parent().add_child(new_reflection)
 		new_reflection.player = self
+		new_reflection.deactivate()
 		reflections.append(new_reflection)
 
 
