@@ -19,6 +19,8 @@ var dir = Vector2(1, 0)
 
 onready var action_raycast = $ActionRaycast
 
+onready var animation_player = $AnimationPlayer
+
 onready var right_reflection_raycasts = get_node("RightReflectionRaycasts").get_children()
 onready var left_reflection_raycasts = get_node("LeftReflectionRaycasts").get_children()
 onready var up_reflection_raycasts = get_node("UpReflectionRaycasts").get_children()
@@ -101,6 +103,7 @@ func pop():
 
 func update():
 	update_position()
+	update_animation()
 	create_reflections()
 	update_reflections()
 	update_existence()
@@ -151,3 +154,51 @@ func activate():
 func deactivate():
 	active = false
 	hide()
+
+
+func flip_process():
+	if dir == Vector2(1, 0):
+		flip_h = false
+	else:
+		flip_h = true
+	
+	if up_dir == Vector2(0, -1):
+		flip_v = false
+	else:
+		flip_v = true
+
+
+func get_true_animation_name(anim):
+	if is_carrying:
+		return "carry_" + anim
+	return anim
+
+
+func check_on_floor():
+	return source.check_on_floor()
+
+
+func get_vel():
+	var vel = source.get_vel()
+	
+	if is_reflection_horizontal:
+		vel[0] = -vel[0]
+	else:
+		vel[1] = -vel[1]
+	
+	return vel
+
+
+func update_animation():
+	flip_process()
+	
+	if check_on_floor():
+		if get_vel()[0] != 0:
+			animation_player.play(get_true_animation_name("move"))
+		else:
+			animation_player.play(get_true_animation_name("idle"))
+	else:
+		if get_vel().dot(up_dir) > 0:
+			animation_player.play(get_true_animation_name("jump"))
+		else:
+			animation_player.play(get_true_animation_name("fall"))

@@ -27,6 +27,9 @@ onready var floor_detector_left = get_node("Raycasts/FloorDetectorLeft")
 onready var floor_detector_right = get_node("Raycasts/FloorDetectorRight")
 onready var action_raycast = get_node("Raycasts/ActionRaycast")
 
+onready var sprite = $Sprite
+onready var animation_player = $AnimationPlayer
+
 onready var coyote_timer = get_node("CoyoteTimer")
 onready var log_jump_timer = get_node("LogJumpTimer")
 
@@ -61,6 +64,7 @@ func _physics_process(delta):
 		pickup_process()
 		move_process()
 		reflection_process()
+		animation_process()
 
 
 func get_input_dir():
@@ -258,3 +262,40 @@ func update_reflections():
 func reflection_process():
 	create_reflections()
 	update_reflections()
+
+
+func flip_process():
+	if dir == Vector2(1, 0):
+		sprite.flip_h = false
+	else:
+		sprite.flip_h = true
+	
+	if up_dir == Vector2(0, -1):
+		sprite.flip_v = false
+	else:
+		sprite.flip_v = true
+
+
+func get_true_animation_name(anim):
+	if is_carrying:
+		return "carry_" + anim
+	return anim
+
+
+func get_vel():
+	return vel
+
+
+func animation_process():
+	flip_process()
+	
+	if check_on_floor():
+		if vel[0] != 0:
+			animation_player.play(get_true_animation_name("move"))
+		else:
+			animation_player.play(get_true_animation_name("idle"))
+	else:
+		if vel[1] < 0:
+			animation_player.play(get_true_animation_name("jump"))
+		else:
+			animation_player.play(get_true_animation_name("fall"))
