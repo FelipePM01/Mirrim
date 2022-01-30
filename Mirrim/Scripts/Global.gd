@@ -9,6 +9,7 @@ const HEAVY_MOVE_SPEED = 60
 
 const FALL_SPEED = 250
 
+const MIRROR_JUMP_SPEED = 30
 const JUMP_SPEED = 50
 const HEAVY_JUMP_SPEED = 40
 
@@ -26,3 +27,4 @@ const COYOTE_TIME = 0.07
 const LOG_JUMP_TIME = 0.07
 
 const CELL_SIZE = 16
+const EXTRA_MIRROR_SPACING = 16
