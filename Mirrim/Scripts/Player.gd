@@ -60,11 +60,17 @@ func _physics_process(delta):
 	if not first_pass:
 		first_pass = true
 	else:
+		reset_process()
 		dir_process()
 		pickup_process()
 		move_process()
 		reflection_process()
 		animation_process()
+
+
+func reset_process():
+	if Input.is_action_just_pressed("restart"):
+		Global.restart()
 
 
 func get_input_dir():
