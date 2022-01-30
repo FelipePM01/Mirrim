@@ -92,6 +92,9 @@ func pop():
 		if reflection_references[i]:
 			reflection_references[i].pop()
 	
+	if is_carrying:
+		force_drop()
+	
 	source.remove_reflection_reference(self)
 	
 	player.remove_reflection(self)
@@ -101,6 +104,13 @@ func update():
 	create_reflections()
 	update_reflections()
 	update_existence()
+
+
+func force_drop():
+	carried.drop_in_place()
+	
+	carried = null
+	is_carrying = false
 
 
 func try_pickup():

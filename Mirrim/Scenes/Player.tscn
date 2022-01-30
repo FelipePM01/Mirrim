@@ -5,7 +5,7 @@
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
-height = 8.0
+height = 6.0
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 4, 2 )
@@ -23,6 +23,11 @@ shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="InteractionHitbox" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource( 1 )
 
 [node name="Raycasts" type="Node2D" parent="."]
 

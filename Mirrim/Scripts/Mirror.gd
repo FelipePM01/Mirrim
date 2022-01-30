@@ -58,6 +58,14 @@ func pickup(entity):
 	set_collision_mask_bit(0,false)
 
 
+func drop_in_place():
+	is_being_carried = false
+	carrier = null
+	
+	set_collision_layer_bit(0, true)
+	set_collision_mask_bit(0, true)
+
+
 func drop():
 	var sum_vector = (rect.size.project(Vector2(1, 0)).distance_to(Vector2(0, 0)) / 2 * carrier.dir + rect.size.project(Vector2(0, 1)).distance_to(Vector2(0, 0)) / 2 * carrier.up_dir) * Global.CELL_SIZE
 	var aim_pos = carrier.position + carrier.dir * (Global.CELL_SIZE + Global.EXTRA_MIRROR_SPACING) / 2 + sum_vector
@@ -74,11 +82,7 @@ func drop():
 	
 	position = aim_pos
 	
-	is_being_carried = false
-	carrier = null
-	
-	set_collision_layer_bit(0, true)
-	set_collision_mask_bit(0, true)
+	drop_in_place()
 	
 	return true
 
