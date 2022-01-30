@@ -47,21 +47,25 @@ collision_mask = 2
 position = Vector2( 4, -7 )
 enabled = true
 cast_to = Vector2( 384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast2" type="RayCast2D" parent="Raycasts/RightReflectionRaycasts"]
 position = Vector2( 4, -1 )
 enabled = true
 cast_to = Vector2( 384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast3" type="RayCast2D" parent="Raycasts/RightReflectionRaycasts"]
 position = Vector2( 4, 1 )
 enabled = true
 cast_to = Vector2( 384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast4" type="RayCast2D" parent="Raycasts/RightReflectionRaycasts"]
 position = Vector2( 4, 7 )
 enabled = true
 cast_to = Vector2( 384, 0 )
+collision_mask = 2
 
 [node name="LeftReflectionRaycasts" type="Node2D" parent="Raycasts"]
 
@@ -69,21 +73,25 @@ cast_to = Vector2( 384, 0 )
 position = Vector2( -4, -7 )
 enabled = true
 cast_to = Vector2( -384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast6" type="RayCast2D" parent="Raycasts/LeftReflectionRaycasts"]
 position = Vector2( -4, -1 )
 enabled = true
 cast_to = Vector2( -384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast7" type="RayCast2D" parent="Raycasts/LeftReflectionRaycasts"]
 position = Vector2( -4, 1 )
 enabled = true
 cast_to = Vector2( -384, 0 )
+collision_mask = 2
 
 [node name="ReflectionRaycast8" type="RayCast2D" parent="Raycasts/LeftReflectionRaycasts"]
 position = Vector2( -4, 7 )
 enabled = true
 cast_to = Vector2( -384, 0 )
+collision_mask = 2
 
 [node name="UpReflectionRaycasts" type="Node2D" parent="Raycasts"]
 
@@ -91,11 +99,13 @@ cast_to = Vector2( -384, 0 )
 position = Vector2( -3, -8 )
 enabled = true
 cast_to = Vector2( 0, -216 )
+collision_mask = 2
 
 [node name="ReflectionRaycast10" type="RayCast2D" parent="Raycasts/UpReflectionRaycasts"]
 position = Vector2( 3, -8 )
 enabled = true
 cast_to = Vector2( 0, -216 )
+collision_mask = 2
 
 [node name="DownReflectionRaycasts" type="Node2D" parent="Raycasts"]
 
@@ -103,11 +113,13 @@ cast_to = Vector2( 0, -216 )
 position = Vector2( 3, 8 )
 enabled = true
 cast_to = Vector2( 0, 216 )
+collision_mask = 2
 
 [node name="ReflectionRaycast12" type="RayCast2D" parent="Raycasts/DownReflectionRaycasts"]
 position = Vector2( -3, 8 )
 enabled = true
 cast_to = Vector2( 0, 216 )
+collision_mask = 2
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 one_shot = true

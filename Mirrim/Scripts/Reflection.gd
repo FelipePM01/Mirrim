@@ -17,6 +17,8 @@ var is_carrying = false
 var up_dir = Vector2(0, -1)
 var dir = Vector2(1, 0)
 
+onready var action_raycast = $ActionRaycast
+
 onready var right_reflection_raycasts = get_node("RightReflectionRaycasts").get_children()
 onready var left_reflection_raycasts = get_node("LeftReflectionRaycasts").get_children()
 onready var up_reflection_raycasts = get_node("UpReflectionRaycasts").get_children()
@@ -28,12 +30,15 @@ onready var DIR_EQUIVALENTS = {Vector2(1, 0): left_reflection_raycasts, Vector2(
 
 
 func update_existence():
-	if not get_nearest_mirror(DIR_EQUIVALENTS[past_reflection_dir]) == mirror:
+	if not (get_nearest_mirror(DIR_EQUIVALENTS[past_reflection_dir]) == mirror and get_nearest_mirror(source.DIR_EQUIVALENTS[-past_reflection_dir]) == mirror):
 		pop()
 
 
 func update_position():
 	position = source.position + 2 * (mirror.position + mirror.get_center() - source.position).project(past_reflection_dir)
+	
+	if is_reflection_horizontal:
+		dir = -source.dir
 
 
 func get_nearest_mirror(raycast_list):
@@ -96,6 +101,31 @@ func update():
 	create_reflections()
 	update_reflections()
 	update_existence()
+
+
+func try_pickup():
+	if not is_carrying:
+		action_raycast.cast_to = dir * Global.ACTION_RAYCAST_LENGHT
+		action_raycast.force_raycast_update()
+		
+		if action_raycast.is_colliding():
+			var collider = action_raycast.get_collider()
+			if collider.can_be_picked_up():
+				carried = action_raycast.get_collider()
+				is_carrying = true
+				carried.pickup(self)
+	else:
+		if carried.drop():
+			carried = null
+			is_carrying = false
+
+
+func pickup():
+	try_pickup()
+	if not is_carrying:
+		for i in range(4):
+			if reflection_references[i]:
+				reflection_references[i].pickup()
 
 
 func activate():

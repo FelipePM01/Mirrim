@@ -37,6 +37,7 @@ onready var down_reflection_raycasts = get_node("Raycasts/DownReflectionRaycasts
 
 onready var reflection_references = [right_reflection, down_reflection, left_reflection, up_reflection]
 onready var reflection_raycasts = [right_reflection_raycasts, down_reflection_raycasts, left_reflection_raycasts, up_reflection_raycasts]
+onready var DIR_EQUIVALENTS = {Vector2(1, 0): left_reflection_raycasts, Vector2(-1, 0): right_reflection_raycasts, Vector2(0, 1): up_reflection_raycasts, Vector2(0, -1): down_reflection_raycasts}
 
 
 func _ready():
@@ -143,20 +144,30 @@ func dir_process():
 		dir = Vector2(-1, 0)
 
 
-func pickup_process():
-	if Input.is_action_just_pressed("action"):
-		if not is_carrying:
-			action_raycast.cast_to = dir * Global.ACTION_RAYCAST_LENGHT
-			action_raycast.force_raycast_update()
-			
-			if check_on_floor() and action_raycast.is_colliding():
+func try_pickup():
+	if not is_carrying:
+		action_raycast.cast_to = dir * Global.ACTION_RAYCAST_LENGHT
+		action_raycast.force_raycast_update()
+		
+		if action_raycast.is_colliding():
+			var collider = action_raycast.get_collider()
+			if collider.can_be_picked_up():
 				carried = action_raycast.get_collider()
 				is_carrying = true
 				carried.pickup(self)
-		else:
-			carried.drop()
+	else:
+		if carried.drop():
 			carried = null
 			is_carrying = false
+
+
+func pickup_process():
+	if Input.is_action_just_pressed("action"):
+		try_pickup()
+		if not is_carrying:
+			for i in range(4):
+				if reflection_references[i]:
+					reflection_references[i].pickup()
 
 
 func move_process():
@@ -169,7 +180,7 @@ func move_process():
 	
 	vel = h_vel + v_vel
 	
-	move_and_slide(vel)
+	vel = move_and_slide(vel)
 
 
 func get_nearest_mirror(raycast_list):
@@ -210,7 +221,9 @@ func make_reflection(source, mirror, is_reflection_horizontal):
 			reflections[active_reflections].dir = source.dir
 			reflections[active_reflections].up_dir = -source.up_dir
 		
-		reflections[active_reflections].past_reflection_dir = (mirror.position + mirror.get_center() - source.position).project(project_dir).normalized()
+		reflections[active_reflections].past_reflection_dir = (mirror.position - source.position).project(project_dir).normalized()
+		if reflections[active_reflections].past_reflection_dir == Vector2(0, 0):
+			reflections[active_reflections].past_reflection_dir = source.dir
 		
 		reflections[active_reflections].activate()
 		
