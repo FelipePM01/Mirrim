@@ -904,6 +904,8 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 
 [node name="Base" type="Node2D"]
 
+[node name="Sprite" parent="." instance=ExtResource( 3 )]
+
 [node name="MarbleTiles" type="TileMap" parent="."]
 position = Vector2( 0, 2 )
 tile_set = SubResource( 1 )
@@ -937,9 +939,6 @@ tile_data = PoolIntArray( 0, 0, 3, 65536, 0, 65539, 131072, 0, 65539, 196608, 0,
 [node name="Flower" parent="." instance=ExtResource( 2 )]
 position = Vector2( 456, 80 )
 next_level_path = "res://Scenes/Menu.tscn"
-
-[node name="Sprite" parent="." instance=ExtResource( 3 )]
-position = Vector2( 192, 108 )
 
 [editable path="Mirror"]
 [editable path="Mirror2"]
